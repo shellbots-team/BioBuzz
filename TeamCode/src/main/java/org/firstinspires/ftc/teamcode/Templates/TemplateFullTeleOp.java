@@ -82,7 +82,6 @@ public class TemplateFullTeleOp extends OpMode {
         // Call the initialization protocol from the Robot class.
         robot = new Robot(hardwareMap, telemetry, this);
         teleFollower = Constants.createFollower(hardwareMap);
-        robot.targetScanner.InitLimeLightTargeting(1, robot);
         robot.controlMode = STANDARD_ROBOT_CENTRIC;
         imu = hardwareMap.get(IMU.class, "imu");
 
@@ -286,10 +285,8 @@ public class TemplateFullTeleOp extends OpMode {
         if (gamepad2.start && gamepad2.shareWasPressed()) {
             if (robot.alliance == BLUE) {
                 robot.alliance = RED;
-                robot.targetScanner.InitLimeLightTargeting(1, robot);
             } else {
                 robot.alliance = BLUE;
-                robot.targetScanner.InitLimeLightTargeting(2, robot);
             }
         }
     }

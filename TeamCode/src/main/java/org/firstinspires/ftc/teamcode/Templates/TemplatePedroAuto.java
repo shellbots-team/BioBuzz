@@ -50,7 +50,6 @@ public class TemplatePedroAuto extends OpMode {
         pathTimer = new Timer();
         actionTimer = new Timer();
 
-        robot.randomizationScanner.InitLimeLight(0);
         blackboard.put(ALLIANCE_KEY, "BLUE");
         stallTimer = new ElapsedTime();
 
