@@ -260,7 +260,7 @@ public class ShellBotsTeleOp extends OpMode {
             robot.intakeMotor.setPower(1);
         }
         if (gamepad1.triangleWasPressed()) {
-            robot.intakeMotor.setPower(0.75);
+            robot.intakeMotor.setPower(-1);
         }
         if (gamepad1.circleWasPressed()) {
             robot.intakeMotor.setPower(0.5);
