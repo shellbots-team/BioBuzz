@@ -256,16 +256,16 @@ public class ShellBotsTeleOp extends OpMode {
     }
 
     private void intakeSpeedTest() {
-        if (gamepad1.rightBumperWasPressed()) {
+        if (gamepad2.rightBumperWasPressed()) {
             robot.intakeMotor.setPower(1);
         }
-        if (gamepad1.crossWasPressed()) {
+        if (gamepad2.crossWasPressed()) {
             robot.intakeMotor.setPower(-1);
         }
-        if (gamepad1.leftBumperWasPressed()) {
+        if (gamepad2.leftBumperWasPressed()) {
             robot.intakeMotor.setPower(0.5);
         }
-        if (gamepad1.circleWasPressed()) {
+        if (gamepad2.circleWasPressed()) {
             robot.intakeMotor.setPower(0);
         }
     }
