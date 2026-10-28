@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.R;
@@ -31,6 +32,8 @@ public class Robot {
     public DcMotorEx backRightDrive;
 
     public DcMotorEx intakeMotor;
+
+    public Servo intakeServo;
 
     public VoltageSensor voltageSensor;
 
@@ -90,6 +93,7 @@ public class Robot {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 
         voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
 

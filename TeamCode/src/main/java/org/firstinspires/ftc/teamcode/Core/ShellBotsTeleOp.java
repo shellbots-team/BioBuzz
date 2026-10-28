@@ -183,7 +183,10 @@ public class ShellBotsTeleOp extends OpMode {
 
         intakeSpeedTest();
 
+        intakeBarTest();
+
         switchAlliance();
+
         controlMode();
 
 
@@ -267,6 +270,15 @@ public class ShellBotsTeleOp extends OpMode {
         }
         if (gamepad2.circleWasPressed()) {
             robot.intakeMotor.setPower(0);
+        }
+    }
+
+    private void intakeBarTest() {
+        if (gamepad2.dpadUpWasPressed()){
+            robot.intakeServo.setPosition(1);
+        }
+        if (gamepad2.dpadDownWasPressed()){
+            robot.intakeServo.setPosition(0);
         }
     }
     //used for testing intake speed
