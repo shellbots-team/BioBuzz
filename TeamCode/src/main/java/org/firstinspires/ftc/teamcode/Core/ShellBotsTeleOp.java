@@ -257,17 +257,25 @@ public class ShellBotsTeleOp extends OpMode {
     }
 
     private void intakeSpeedTest() {
-        if (gamepad1.crossWasPressed()) {
+        if (gamepad2.rightBumperWasPressed()) {
             robot.intakeMotor.setPower(1);
         }
-        if (gamepad1.triangleWasPressed()) {
-            robot.intakeMotor.setPower(0.75);
-        }
-        if (gamepad1.circleWasPressed()) {
+        if (gamepad2.leftBumperWasPressed()) {
             robot.intakeMotor.setPower(0.5);
         }
-        if (gamepad1.squareWasPressed()) {
+        if (gamepad2.crossWasPressed()) {
+            robot.intakeMotor.setPower(-0.5);
+        }
+        if (gamepad2.squareWasPressed()) {
             robot.intakeMotor.setPower(0);
+        }
+    }
+    private void flowerBarTest() {
+        if (gamepad2.dpadDownWasPressed()) {
+            robot.flowerServo1.setPosition(0.5);
+        }
+        if (gamepad2.dpadDownWasPressed()) {
+            robot.flowerServo2.setPosition(0.5);
         }
     }
     //used for testing intake speed
