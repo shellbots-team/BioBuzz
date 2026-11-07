@@ -263,7 +263,7 @@ public class ShellBotsTeleOp extends OpMode {
         } else if (gamepad2.right_bumper) {
             robot.intake.runIntake();
         } else {
-            robot.intake.
+            robot.intake.stopIntake();
         }
     }
     /* private void intakeSpeedTest() {
