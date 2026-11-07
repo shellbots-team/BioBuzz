@@ -63,6 +63,7 @@ public class ShellBotsTeleOp extends OpMode {
     public Robot robot = null;
     public IMU imu;
 
+
     private boolean blackboardPositioningSucessful = true;
 
 
@@ -181,7 +182,7 @@ public class ShellBotsTeleOp extends OpMode {
             doTelemetryStuff();
         }
 
-        intakeSpeedTest();
+        intakeAndOuttake();
 
         switchAlliance();
 
@@ -256,7 +257,16 @@ public class ShellBotsTeleOp extends OpMode {
         setIndividualPowers(motorPowers);
     }
 
-    private void intakeSpeedTest() {
+    private void intakeAndOuttake() {
+        if (gamepad2.left_bumper) {
+            robot.intake.runOuttake();
+        } else if (gamepad2.right_bumper) {
+            robot.intake.runIntake();
+        } else {
+            robot.intake.
+        }
+    }
+    /* private void intakeSpeedTest() {
         if (gamepad2.rightBumperWasPressed()) {
             robot.intakeMotor.setPower(1);
         }
@@ -270,14 +280,15 @@ public class ShellBotsTeleOp extends OpMode {
             robot.intakeMotor.setPower(0);
         }
     }
-    private void flowerBarTest() {
-        if (gamepad2.dpadDownWasPressed()) {
-            robot.flowerServo1.setPosition(0.5);
-        }
-        if (gamepad2.dpadDownWasPressed()) {
-            robot.flowerServo2.setPosition(0.5);
-        }
-    }
+   */
+            private void flowerBarTest() {
+                if (gamepad2.dpadDownWasPressed()) {
+                    robot.flowerServo1.setPosition(0.5);
+                }
+                if (gamepad2.dpadDownWasPressed()) {
+                    robot.flowerServo2.setPosition(0.5);
+                }
+            }
     //used for testing intake speed
 
     private void controlMode() {

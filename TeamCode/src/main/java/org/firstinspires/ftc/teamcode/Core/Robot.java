@@ -32,6 +32,7 @@ public class Robot {
     public DcMotorEx backRightDrive;
 
     public DcMotorEx intakeMotor;
+    public DcMotorEx secondaryIntakeMotor;
 
     public Servo flowerServo1;
     public Servo flowerServo2;
@@ -43,6 +44,8 @@ public class Robot {
     //init and declare war
     public OpMode opmode;
     public HardwareMap hardwareMap;
+
+    public Intake intake;
 
     public DriveMode controlMode;//STANDARD_ROBOT_CENTRIC;
     public IMU.Parameters imuParameters;
@@ -94,6 +97,7 @@ public class Robot {
         backRightDrive = hardwareMap.get(DcMotorEx.class, "backRightDrive");
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        secondaryIntakeMotor = hardwareMap.get(DcMotorEx.class, "secondaryIntakeMotor");
 
         flowerServo1 = hardwareMap.get(Servo.class, "flowerServo1");
         flowerServo2 = hardwareMap.get(Servo.class, "flowerServo2");
@@ -119,6 +123,7 @@ public class Robot {
         backRightDrive.setZeroPowerBehavior(BRAKE);
         frontLeftDrive.setZeroPowerBehavior(BRAKE);
 
+        intake = new Intake(this);
 
         //This is new..
         telemetry.addData("Status", "Initialized");
