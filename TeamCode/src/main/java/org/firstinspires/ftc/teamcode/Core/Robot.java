@@ -12,6 +12,7 @@ import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -34,8 +35,8 @@ public class Robot {
     public DcMotorEx intakeMotor;
     public DcMotorEx secondaryIntakeMotor;
 
-    public Servo transferServo1;
-    public Servo transferServo2;
+    public CRServo transferServo1;
+    public CRServo transferServo2;
     public DcMotorEx launchMotor;
 
     public Servo flowerServo1;
@@ -50,6 +51,7 @@ public class Robot {
     public HardwareMap hardwareMap;
 
     public Intake intake;
+    public Launcher launcher;
 
     public DriveMode controlMode;//STANDARD_ROBOT_CENTRIC;
     public IMU.Parameters imuParameters;
@@ -103,8 +105,8 @@ public class Robot {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         secondaryIntakeMotor = hardwareMap.get(DcMotorEx.class, "secondaryIntakeMotor");
 
-        transferServo1 = hardwareMap.get(Servo.class, "transferServo1");
-        transferServo2 = hardwareMap.get(Servo.class, "transferServo2");
+        transferServo1 = hardwareMap.get(CRServo.class, "transferServo1");
+        transferServo2 = hardwareMap.get(CRServo.class, "transferServo2");
         launchMotor = hardwareMap.get(DcMotorEx.class, "launchMotor");
 
         flowerServo1 = hardwareMap.get(Servo.class, "flowerServo1");
@@ -131,7 +133,11 @@ public class Robot {
         backRightDrive.setZeroPowerBehavior(BRAKE);
         frontLeftDrive.setZeroPowerBehavior(BRAKE);
 
+        transferServo1.setDirection(FORWARD);
+        transferServo2.setDirection(FORWARD);
+
         intake = new Intake(this);
+        launcher = new Launcher(this);
 
         //This is new..
         telemetry.addData("Status", "Initialized");

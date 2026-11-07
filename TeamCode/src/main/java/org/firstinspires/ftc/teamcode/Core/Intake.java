@@ -16,6 +16,8 @@ public class Intake {
         WAIT;
     }
 
+
+
     public void runIntake() {
         if (!FULL) {
             robot.intakeMotor.setPower(1);
