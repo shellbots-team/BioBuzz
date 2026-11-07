@@ -34,6 +34,10 @@ public class Robot {
     public DcMotorEx intakeMotor;
     public DcMotorEx secondaryIntakeMotor;
 
+    public Servo transferServo1;
+    public Servo transferServo2;
+    public DcMotorEx launchMotor;
+
     public Servo flowerServo1;
     public Servo flowerServo2;
 
@@ -98,6 +102,10 @@ public class Robot {
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         secondaryIntakeMotor = hardwareMap.get(DcMotorEx.class, "secondaryIntakeMotor");
+
+        transferServo1 = hardwareMap.get(Servo.class, "transferServo1");
+        transferServo2 = hardwareMap.get(Servo.class, "transferServo2");
+        launchMotor = hardwareMap.get(DcMotorEx.class, "launchMotor");
 
         flowerServo1 = hardwareMap.get(Servo.class, "flowerServo1");
         flowerServo2 = hardwareMap.get(Servo.class, "flowerServo2");
