@@ -21,6 +21,7 @@ public class Launcher {
 
 
     }
+    //TODO CHECK THE CRSERVOS PLEASE!!!!!!!! MAKE SURE THEY ARE ROTATING THE CORRECT DIRECTION
     //TODO Tune the launcher
     public void stopLaunch() {
         robot.launchMotor.setPower(0);

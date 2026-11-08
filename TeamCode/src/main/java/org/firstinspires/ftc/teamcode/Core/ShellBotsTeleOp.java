@@ -182,6 +182,8 @@ public class ShellBotsTeleOp extends OpMode {
             doTelemetryStuff();
         }
 
+        launch();
+
         intakeAndOuttake();
 
         switchAlliance();
@@ -277,7 +279,7 @@ public class ShellBotsTeleOp extends OpMode {
     }
     //TODO add timer to the launching instead of manual off switch
 
-    private void flowerBarTest() {
+     private void flowerBarTest() {
         if (gamepad2.dpadDownWasPressed()) {
                     robot.flowerServo1.setPosition(0.5);
         }
