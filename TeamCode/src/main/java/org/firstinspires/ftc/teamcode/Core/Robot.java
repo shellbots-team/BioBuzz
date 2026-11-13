@@ -149,7 +149,7 @@ public class Robot {
      * Updates the state of every part of the robot. Should be called once per loop.
      */
     public void update() {
-        //TODO Make this function update the robot states
+        launcher.update();
     }
 
     /**

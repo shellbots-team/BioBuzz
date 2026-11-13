@@ -182,6 +182,8 @@ public class ShellBotsTeleOp extends OpMode {
             doTelemetryStuff();
         }
 
+        flowerBar();
+
         launch();
 
         intakeAndOuttake();
@@ -189,6 +191,10 @@ public class ShellBotsTeleOp extends OpMode {
         switchAlliance();
 
         controlMode();
+
+        transferTest();
+
+        driveSpeed();
 
 
         if (gamepad2.touchpad) {
@@ -264,7 +270,7 @@ public class ShellBotsTeleOp extends OpMode {
             robot.intake.runOuttake();
         } else if (gamepad2.right_bumper) {
             robot.intake.runIntake();
-        } else {
+        } else if (gamepad2.leftBumperWasReleased() || gamepad2.rightBumperWasReleased()){
             robot.intake.stopIntake();
         }
     }
@@ -273,20 +279,27 @@ public class ShellBotsTeleOp extends OpMode {
         if (gamepad2.rightTriggerWasPressed()) {
             robot.launcher.launch();
         }
-        if (gamepad2.rightTriggerWasReleased()) {
+        if (gamepad2.leftTriggerWasPressed()) {
             robot.launcher.stopLaunch();
         }
     }
     //TODO add timer to the launching instead of manual off switch
 
-     private void flowerBarTest() {
-        if (gamepad2.dpadDownWasPressed()) {
-                    robot.flowerServo1.setPosition(0.5);
-        }
-        if (gamepad2.dpadDownWasPressed()) {
-                    robot.flowerServo2.setPosition(0.5);
+    private void transferTest() {
+        if(gamepad2.triangle) {
+            robot.transferServo1.setPower(1);
+            robot.transferServo2.setPower(-1);
         }
     }
+     private void flowerBar() {
+         if (gamepad2.dpadDownWasPressed()) {
+             robot.flowerServo1.setPosition(0.5);
+         }
+         if (gamepad2.dpadDownWasPressed()) {
+             robot.flowerServo2.setPosition(1);
+         }
+     }
+
     //used for testing intake speed
 
     private void controlMode() {
@@ -385,23 +398,6 @@ public class ShellBotsTeleOp extends OpMode {
         {
             return new Pose(((inX) * 72) + 72, ((inY) * 72) + 72);
         }
-    }
-
-    private PathChain makeDynamicPath(Pose targetPose, double targetHeadingDegrees) {
-        return teleFollower.pathBuilder()
-                .addPath(new BezierLine(teleFollower.getPose(), targetPose))
-                .setLinearHeadingInterpolation(teleFollower.getHeading(), Math.toRadians(targetHeadingDegrees))
-                .build();
-        // Build the PathChain after adding all paths
-    }
-
-    private PathChain makeDynamicChain(Pose initalPose, Pose secondaryPose, double targetHeadingDegrees) {
-        return teleFollower.pathBuilder()
-                .addPath(new BezierLine(teleFollower.getPose(), initalPose))
-                .setLinearHeadingInterpolation(teleFollower.getHeading(), Math.toRadians(targetHeadingDegrees))
-                .addPath(new BezierLine(initalPose, secondaryPose))
-                .setLinearHeadingInterpolation(targetHeadingDegrees, targetHeadingDegrees)
-                .build(); // Build the PathChain after adding all paths
     }
 }
 
