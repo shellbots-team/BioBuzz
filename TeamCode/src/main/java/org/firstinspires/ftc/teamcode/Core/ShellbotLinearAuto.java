@@ -41,16 +41,23 @@ public class ShellbotLinearAuto extends LinearOpMode {
         //The code to run once play has been pressed goes here.
         launching = true;
         robot.launcher.launch();
+        waitWhileLaunching();
+        robot.launcher.stopLaunch();
+        auto.moveAndStall(FORWARD, 900, 0);
+        auto.moveAndStall(LEFT, 1400, 0);
+        auto.moveAndStall(FORWARD, 1850, 0);
+        auto.moveAndStall(LEFT, 300, 0);
+    }
+
+    private void waitWhileLaunching() {
         launchStartTime = getRuntime();
-        if (getRuntime() - launchStartTime >=15) {
-            launching = false;
-        }
         while (launching) {
+            robot.launcher.update();
+            if (getRuntime() - launchStartTime >= 15) {
+                launching = false;
+            }
             sleep(1);
         }
-        auto.moveAndStall(FORWARD, 900, 0);
-        auto.moveAndStall(LEFT, 1800, 0);
-        auto.moveAndStall(FORWARD, 2700, 0);
     }
 }
 
