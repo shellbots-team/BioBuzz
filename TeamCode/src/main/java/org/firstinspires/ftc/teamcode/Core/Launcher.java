@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Core;
 
-import com.qualcomm.robotcore.hardware.Servo;
-
 public class Launcher {
     private Robot robot;
 
@@ -18,16 +16,18 @@ public class Launcher {
 
     public enum LaunchState {
         START,
+        SWITCH_TO_SECOND_BALL,
         SECOND_BALL,
+        SWITCH_TO_THIRD_BALL,
         THIRD_BALL,
+        SWITCH_TO_FOURTH_BALL,
         FOURTH_BALL,
         WAIT,
-        GIVE_TIME;
     }
     private LaunchState currentLaunchState;
 
     public void update() {
-        if(waiting && robot.opmode.getRuntime() - revStartTime >= 3){
+        if(waiting && robot.opmode.getRuntime() - revStartTime >= 3) {
             robot.transferServo1.setPower(1);
             robot.transferServo2.setPower(-1);
             waiting = false;
@@ -43,28 +43,55 @@ public class Launcher {
                     switchLaunchBall();
                     currentLaunchState = LaunchState.SECOND_BALL;
                 }
-            case SECOND_BALL:
-                launchNewBall();
+                break;
+            case SWITCH_TO_SECOND_BALL:
+                switchLaunchBall();
                 if (switchState) {
-                    switchLaunchBall();
+                    launch();
+                    currentLaunchState = LaunchState.SECOND_BALL;
+                }
+                break;
+            case SECOND_BALL:
+                checkIfLaunchDone();
+                if (switchState) {
+
+                    currentLaunchState = LaunchState.SWITCH_TO_THIRD_BALL;
+                }
+                break;
+            case SWITCH_TO_THIRD_BALL:
+                switchLaunchBall();
+                if (switchState) {
+                    launch();
                     currentLaunchState = LaunchState.THIRD_BALL;
                 }
+                break;
             case THIRD_BALL:
-               launchNewBall();
+                checkIfLaunchDone();
                 if (switchState) {
                     currentLaunchState = LaunchState.FOURTH_BALL;
                 }
+                break;
+            case SWITCH_TO_FOURTH_BALL:
+                switchLaunchBall();
+                if (switchState) {
+                    launch();
+                    currentLaunchState = LaunchState.FOURTH_BALL;
+                }
+                break;
             case FOURTH_BALL:
-                launchNewBall();
+                checkIfLaunchDone();
                 if (switchState) {
                     switchLaunchBall();
                     currentLaunchState = LaunchState.WAIT;
                 }
+                break;
             case WAIT:
                 stopLaunch();
                 if (startLaunch) {
                     currentLaunchState = LaunchState.START;
+                    stateStallTime = robot.opmode.getRuntime();
                 }
+                break;
         }
     }
     /*
@@ -78,16 +105,22 @@ public class Launcher {
     }
     //allows me to change the state machines from other classes because I couldn't figure out how to do it
 
+    /**
+     * sets a timer for the new ball to get pushed back to the transfer servos, then switches the state in the launcher state machine
+     */
     private void switchLaunchBall() {
         switchState = false;
         stateStallTime = robot.opmode.getRuntime();
         if (robot.opmode.getRuntime() - stateStallTime >= 0.25) {
             robot.secondaryIntakeMotor.setPower(0);
+            switchState = true;
         }
     }
-    private void launchNewBall() {
-        launch();
-        stateStallTime = robot.opmode.getRuntime();
+
+    /**
+     *
+     */
+    private void checkIfLaunchDone() {
         if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
             robot.secondaryIntakeMotor.setPower(1);
             switchState = true;
