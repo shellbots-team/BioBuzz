@@ -9,12 +9,12 @@ public class Launcher {
         this.robot = robot;
     }
     private double revStartTime = 0;
+    private double stateStallTime = 0;
 
     private boolean waiting = false;
 
-    private double stateStallTime = 0;
-
     private boolean switchState = false;
+    private boolean startLaunch = false;
 
     public enum LaunchState {
         START,
@@ -40,28 +40,31 @@ public class Launcher {
                 stateStallTime = robot.opmode.getRuntime();
                 if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
                     robot.secondaryIntakeMotor.setPower(1);
+                    switchLaunchBall();
                     currentLaunchState = LaunchState.SECOND_BALL;
                 }
             case SECOND_BALL:
-                launchTimeSpacer();
+                launchNewBall();
                 if (switchState) {
+                    switchLaunchBall();
                     currentLaunchState = LaunchState.THIRD_BALL;
                 }
             case THIRD_BALL:
-                launchTimeSpacer();
+               launchNewBall();
                 if (switchState) {
                     currentLaunchState = LaunchState.FOURTH_BALL;
                 }
             case FOURTH_BALL:
-                launchTimeSpacer();
+                launchNewBall();
                 if (switchState) {
+                    switchLaunchBall();
                     currentLaunchState = LaunchState.WAIT;
                 }
             case WAIT:
                 stopLaunch();
-                if (switchState) {
+                if (startLaunch) {
                     currentLaunchState = LaunchState.START;
-            }
+                }
         }
     }
     /*
@@ -71,16 +74,18 @@ public class Launcher {
      */
 
     public void switchStateSwitcher() {
-        switchState = true;
+        startLaunch = true;
     }
     //allows me to change the state machines from other classes because I couldn't figure out how to do it
 
-    private void launchTimeSpacer() {
+    private void switchLaunchBall() {
         switchState = false;
         stateStallTime = robot.opmode.getRuntime();
         if (robot.opmode.getRuntime() - stateStallTime >= 0.25) {
             robot.secondaryIntakeMotor.setPower(0);
         }
+    }
+    private void launchNewBall() {
         launch();
         stateStallTime = robot.opmode.getRuntime();
         if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
@@ -102,6 +107,7 @@ public class Launcher {
         robot.transferServo1.setPower(0);
         robot.transferServo2.setPower(0);
         robot.secondaryIntakeMotor.setPower(0);
+        startLaunch = false;
         switchState = false;
     }
 }
