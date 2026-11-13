@@ -7,13 +7,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(group = "Templates", name = "edge of wall no launch auto")
+@Autonomous(group = "Core", name = "ShellbotLinearAuto")
 public class ShellbotLinearAuto extends LinearOpMode {
     private Robot robot;
     private AutonomousPLUS auto;
 
     public static final String ALLIANCE_KEY = "Alliance";
     public static final String PATTERN_KEY = "Pattern";
+
+    private boolean launching = false;
+    private double launchStartTime = 0;
+
 
     public void runOpMode() {
 
@@ -35,9 +39,18 @@ public class ShellbotLinearAuto extends LinearOpMode {
         auto.speed = 0.5;
 
         //The code to run once play has been pressed goes here.
-        auto.moveAndStall(RIGHT, 150,0);
-        auto.moveAndStall(FORWARD, 350, 0);
-
+        launching = true;
+        robot.launcher.launch();
+        launchStartTime = getRuntime();
+        if (getRuntime() - launchStartTime >=15) {
+            launching = false;
+        }
+        while (launching) {
+            sleep(1);
+        }
+        auto.moveAndStall(FORWARD, 900, 0);
+        auto.moveAndStall(LEFT, 1800, 0);
+        auto.moveAndStall(FORWARD, 2700, 0);
     }
 }
 
