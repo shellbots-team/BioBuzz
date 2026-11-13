@@ -186,6 +186,8 @@ public class ShellBotsTeleOp extends OpMode {
 
         launch();
 
+        launchStateMachine();
+
         intakeAndOuttake();
 
         switchAlliance();
@@ -300,7 +302,11 @@ public class ShellBotsTeleOp extends OpMode {
          }
      }
 
-    //used for testing intake speed
+     private void launchStateMachine() {
+         if (gamepad2.crossWasPressed()) {
+             robot.launcher.switchStateSwitcher();
+         }
+     }
 
     private void controlMode() {
         if (gamepad1.back && !gamepad1.start) {

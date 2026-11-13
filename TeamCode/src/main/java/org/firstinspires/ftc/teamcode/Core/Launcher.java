@@ -14,7 +14,9 @@ public class Launcher {
 
     private double stateStallTime = 0;
 
-    private enum LaunchState {
+    private boolean switchState = false;
+
+    public enum LaunchState {
         START,
         SECOND_BALL,
         THIRD_BALL,
@@ -28,38 +30,78 @@ public class Launcher {
         if(waiting && robot.opmode.getRuntime() - revStartTime >= 3){
             robot.transferServo1.setPower(1);
             robot.transferServo2.setPower(-1);
-            robot.secondaryIntakeMotor.setPower(1);
             waiting = false;
         }
+        //works as a timer so that the transfer servos wait until the launcher motor is up to speed
 
         switch (currentLaunchState) {
             case START:
                 launch();
                 stateStallTime = robot.opmode.getRuntime();
-                if ()
+                if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
+                    robot.secondaryIntakeMotor.setPower(1);
+                    currentLaunchState = LaunchState.SECOND_BALL;
+                }
             case SECOND_BALL:
-
+                launchTimeSpacer();
+                if (switchState) {
+                    currentLaunchState = LaunchState.THIRD_BALL;
+                }
             case THIRD_BALL:
+                launchTimeSpacer();
+                if (switchState) {
+                    currentLaunchState = LaunchState.FOURTH_BALL;
+                }
             case FOURTH_BALL:
+                launchTimeSpacer();
+                if (switchState) {
+                    currentLaunchState = LaunchState.WAIT;
+                }
             case WAIT:
                 stopLaunch();
+                if (switchState) {
+                    currentLaunchState = LaunchState.START;
+            }
         }
     }
+    /*
+    state machine creates time for new balls to launch
+    uses launch() function
+    launchTimeSpacer() is used as a timer to separate each case
+     */
 
+    public void switchStateSwitcher() {
+        switchState = true;
+    }
+    //allows me to change the state machines from other classes because I couldn't figure out how to do it
 
-
-
+    private void launchTimeSpacer() {
+        switchState = false;
+        stateStallTime = robot.opmode.getRuntime();
+        if (robot.opmode.getRuntime() - stateStallTime >= 0.25) {
+            robot.secondaryIntakeMotor.setPower(0);
+        }
+        launch();
+        stateStallTime = robot.opmode.getRuntime();
+        if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
+            robot.secondaryIntakeMotor.setPower(1);
+            switchState = true;
+        }
+    }
+    //acts as a timer for the launching state machine
 
     public void launch() {
         robot.launchMotor.setVelocity(-2250);
         revStartTime = robot.opmode.getRuntime();
         waiting = true;
     }
+    //this function works with the update function, it sets the motor speed, then allows the update function to go when enough time has passed
 
     public void stopLaunch() {
         robot.launchMotor.setPower(0);
         robot.transferServo1.setPower(0);
         robot.transferServo2.setPower(0);
         robot.secondaryIntakeMotor.setPower(0);
+        switchState = false;
     }
 }
