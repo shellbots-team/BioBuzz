@@ -24,7 +24,7 @@ public class Launcher {
         FOURTH_BALL,
         WAIT,
     }
-    private LaunchState currentLaunchState;
+    private LaunchState currentLaunchState = LaunchState.WAIT;
 
     public void update() {
         if(waiting && robot.opmode.getRuntime() - revStartTime >= 3) {
@@ -36,9 +36,8 @@ public class Launcher {
 
         switch (currentLaunchState) {
             case START:
-                launch();
-                stateStallTime = robot.opmode.getRuntime();
-                if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
+
+                if (robot.opmode.getRuntime() - stateStallTime >= 5) {
                     robot.secondaryIntakeMotor.setPower(1);
                     switchLaunchBall();
                     currentLaunchState = LaunchState.SECOND_BALL;
@@ -81,7 +80,7 @@ public class Launcher {
             case FOURTH_BALL:
                 checkIfLaunchDone();
                 if (switchState) {
-                    switchLaunchBall();
+                    startLaunch = false;
                     currentLaunchState = LaunchState.WAIT;
                 }
                 break;
@@ -90,9 +89,12 @@ public class Launcher {
                 if (startLaunch) {
                     currentLaunchState = LaunchState.START;
                     stateStallTime = robot.opmode.getRuntime();
+                    launch();
                 }
                 break;
         }
+
+        robot.telemetry.addData("Launcher State", currentLaunchState);
     }
     /*
     state machine creates time for new balls to launch
@@ -111,7 +113,7 @@ public class Launcher {
     private void switchLaunchBall() {
         switchState = false;
         stateStallTime = robot.opmode.getRuntime();
-        if (robot.opmode.getRuntime() - stateStallTime >= 0.25) {
+        if (robot.opmode.getRuntime() - stateStallTime >= 0.2) {
             robot.secondaryIntakeMotor.setPower(0);
             switchState = true;
         }
@@ -121,7 +123,7 @@ public class Launcher {
      *
      */
     private void checkIfLaunchDone() {
-        if (robot.opmode.getRuntime() - stateStallTime >= 0.5) {
+        if (robot.opmode.getRuntime() - stateStallTime >= 0.2) {
             robot.secondaryIntakeMotor.setPower(1);
             switchState = true;
         }
@@ -140,7 +142,7 @@ public class Launcher {
         robot.transferServo1.setPower(0);
         robot.transferServo2.setPower(0);
         robot.secondaryIntakeMotor.setPower(0);
-        startLaunch = false;
+
         switchState = false;
     }
 }

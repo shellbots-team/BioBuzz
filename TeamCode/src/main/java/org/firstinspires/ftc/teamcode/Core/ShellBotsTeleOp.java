@@ -303,7 +303,7 @@ public class ShellBotsTeleOp extends OpMode {
      }
 
      private void launchStateMachine() {
-         if (gamepad2.crossWasPressed()) {
+         if (gamepad2.cross) {
              robot.launcher.switchStateSwitcher();
          }
      }
