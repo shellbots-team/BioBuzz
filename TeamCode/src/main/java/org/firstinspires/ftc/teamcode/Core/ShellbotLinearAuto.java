@@ -45,7 +45,7 @@ public class ShellbotLinearAuto extends LinearOpMode {
         robot.launcher.stopLaunch();
         auto.moveAndStall(FORWARD, 900, 0);
         auto.moveAndStall(LEFT, 1480, 0);
-        auto.moveAndStall(FORWARD, 1600, 0);
+        auto.moveAndStall(FORWARD, 1620, 0);
     }
 
     private void waitWhileLaunching() {

@@ -27,19 +27,19 @@ public class Launcher {
     private LaunchState currentLaunchState = LaunchState.WAIT;
 
     public void update() {
-        if(waiting && robot.opmode.getRuntime() - revStartTime >= 3) {
+        if(waiting && robot.opmode.getRuntime() - revStartTime >= 4) {
             robot.transferServo1.setPower(1);
-            robot.transferServo2.setPower(-1);
+            robot.transferServo2.setPower(1);
             waiting = false;
         }
         //works as a timer so that the transfer servos wait until the launcher motor is up to speed
 
         switch (currentLaunchState) {
             case START:
-
                 if (robot.opmode.getRuntime() - stateStallTime >= 5) {
                     robot.secondaryIntakeMotor.setPower(1);
                     switchLaunchBall();
+                    stateStallTime = robot.opmode.getRuntime();
                     currentLaunchState = LaunchState.SECOND_BALL;
                 }
                 break;
@@ -53,7 +53,7 @@ public class Launcher {
             case SECOND_BALL:
                 checkIfLaunchDone();
                 if (switchState) {
-
+                    stateStallTime = robot.opmode.getRuntime();
                     currentLaunchState = LaunchState.SWITCH_TO_THIRD_BALL;
                 }
                 break;
@@ -67,6 +67,7 @@ public class Launcher {
             case THIRD_BALL:
                 checkIfLaunchDone();
                 if (switchState) {
+                    stateStallTime = robot.opmode.getRuntime();
                     currentLaunchState = LaunchState.FOURTH_BALL;
                 }
                 break;
@@ -95,12 +96,16 @@ public class Launcher {
         }
 
         robot.telemetry.addData("Launcher State", currentLaunchState);
+        robot.telemetry.addData("Switch State", switchState);
+        robot.telemetry.addData("Start Launch", startLaunch);
+        robot.telemetry.addData("State Stall Time", stateStallTime);
     }
     /*
     state machine creates time for new balls to launch
     uses launch() function
     launchTimeSpacer() is used as a timer to separate each case
      */
+
 
     public void switchStateSwitcher() {
         startLaunch = true;
@@ -112,7 +117,6 @@ public class Launcher {
      */
     private void switchLaunchBall() {
         switchState = false;
-        stateStallTime = robot.opmode.getRuntime();
         if (robot.opmode.getRuntime() - stateStallTime >= 0.2) {
             robot.secondaryIntakeMotor.setPower(0);
             switchState = true;
@@ -123,7 +127,8 @@ public class Launcher {
      *
      */
     private void checkIfLaunchDone() {
-        if (robot.opmode.getRuntime() - stateStallTime >= 0.2) {
+        switchState = false;
+        if (robot.opmode.getRuntime() - stateStallTime >= 2.5) {
             robot.secondaryIntakeMotor.setPower(1);
             switchState = true;
         }
@@ -131,7 +136,7 @@ public class Launcher {
     //acts as a timer for the launching state machine
 
     public void launch() {
-        robot.launchMotor.setVelocity(-2250);
+        robot.launchMotor.setVelocity(1910);
         revStartTime = robot.opmode.getRuntime();
         waiting = true;
     }
@@ -142,7 +147,6 @@ public class Launcher {
         robot.transferServo1.setPower(0);
         robot.transferServo2.setPower(0);
         robot.secondaryIntakeMotor.setPower(0);
-
         switchState = false;
     }
 }

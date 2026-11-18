@@ -25,7 +25,7 @@ import java.util.Objects;
  * This file is our iterative (Non-Linear) "OpMode" for TeleOp.
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
  * The names of OpModes appear on the menu of the FTC Driver Station.
- * When an selection is made from the menu, the corresponding OpMode
+ * When a selection is made from the menu, the corresponding OpMode
  * class is selected on the Robot Controller and executed.
  * This OpMode controls the functions of the robot during the driver-controlled period.
  * <p>
@@ -279,13 +279,12 @@ public class ShellBotsTeleOp extends OpMode {
 
     private void launch() {
         if (gamepad2.rightTriggerWasPressed()) {
-            robot.launcher.launch();
+            robot.launcher.switchStateSwitcher();
         }
         if (gamepad2.leftTriggerWasPressed()) {
             robot.launcher.stopLaunch();
         }
     }
-    //TODO add timer to the launching instead of manual off switch
 
     private void transferTest() {
         if(gamepad2.triangle) {
@@ -295,10 +294,10 @@ public class ShellBotsTeleOp extends OpMode {
     }
      private void flowerBar() {
          if (gamepad2.dpadDownWasPressed()) {
-             robot.flowerServo1.setPosition(0.5);
+             robot.flowerServo1.setPosition(0);
          }
-         if (gamepad2.dpadDownWasPressed()) {
-             robot.flowerServo2.setPosition(1);
+         if (gamepad2.dpadUpWasPressed()) {
+             robot.flowerServo2.setPosition(0);
          }
      }
 

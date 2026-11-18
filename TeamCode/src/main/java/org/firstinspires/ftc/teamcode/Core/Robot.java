@@ -134,7 +134,9 @@ public class Robot {
         frontLeftDrive.setZeroPowerBehavior(BRAKE);
 
         transferServo1.setDirection(FORWARD);
-        transferServo2.setDirection(FORWARD);
+        transferServo2.setDirection(REVERSE);
+
+        launchMotor.setDirection(REVERSE);
 
         intake = new Intake(this);
         launcher = new Launcher(this);

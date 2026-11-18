@@ -32,8 +32,7 @@ public class TemplateLegacyLinearAuto extends LinearOpMode {
         auto.speed = 0.5;
 
         //The code to run once play has been pressed goes here.
-        auto.moveAndStall(Robot.MoveDirection.RIGHT, 150, 0);
-        auto.moveAndStall(Robot.MoveDirection.FORWARD, 700, 0);
+        auto.moveAndStall(Robot.MoveDirection.FORWARD, 250, 0);
     }
 }
 
