@@ -30,7 +30,7 @@ import java.util.Objects;
  * <p>
  */
 
-@TeleOp(name = "ShellBotsTeleOp", group = "Templates")
+@TeleOp(name = "ShellBotsTeleOp", group = "Core")
 public class ShellBotsTeleOp extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
@@ -190,11 +190,6 @@ public class ShellBotsTeleOp extends OpMode {
 
         controlMode();
 
-        transferTest();
-
-        driveSpeed();
-
-
         if (gamepad2.touchpad) {
             killSwitchActivated = true;
             requestOpModeStop();
@@ -282,18 +277,12 @@ public class ShellBotsTeleOp extends OpMode {
         }
     }
 
-    private void transferTest() {
-        if(gamepad2.triangle) {
-            robot.transferServo1.setPower(1);
-            robot.transferServo2.setPower(-1);
-        }
-    }
      private void flowerBar() {
          if (gamepad2.dpadDownWasPressed()) {
-             robot.flowerServo1.setPosition(0);
+             robot.intake.flowerBarDown();
          }
          if (gamepad2.dpadUpWasPressed()) {
-             robot.flowerServo2.setPosition(0);
+             robot.intake.flowerBarUp();
          }
      }
 
@@ -308,18 +297,6 @@ public class ShellBotsTeleOp extends OpMode {
 
         if (gamepad1.options && robot.controlMode == PEDRO) {
             imu.resetYaw();
-        }
-    }
-
-    private void driveSpeed() {
-        if (gamepad1.dpad_up || gamepad1.right_trigger >= 0.25) {
-            speed = 1;
-        } else if (gamepad1.dpad_down) {
-            speed = 0.25;
-        } else if (gamepad1.dpad_left || gamepad1.left_trigger >= 0.25) {
-            speed = 0.5;
-        } else if (gamepad1.dpad_right) {
-            speed = 0.75;
         }
     }
 

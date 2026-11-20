@@ -19,7 +19,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * If you ever have problems with the program not showing up on the driver hub, it's probably because of that.
  * <p>
  */
-@Configurable
 @TeleOp(name = "PIDF Tuner", group = "Core")
 public class PIDFTuner extends OpMode {
 
@@ -28,11 +27,6 @@ public class PIDFTuner extends OpMode {
 
     public Robot robot = null;
 
-    public static double P = 0;
-    public static double I = 0;
-    public static double D = 0;
-    public static double F = 13.12842;
-    public static double targetSpeed = 1543;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -69,20 +63,18 @@ public class PIDFTuner extends OpMode {
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     public void loop() {
+        robot.update();
         telemetry.addData("Velocity", robot.launchMotor.getVelocity());
         if (gamepad2.rightTriggerWasPressed()) {
-            robot.secondaryIntakeMotor.setPower(1);
-            robot.transferServo2.setPower(1);
-            robot.transferServo1.setPower(1);
+            robot.launcher.switchStateSwitcher();
         }
         if (gamepad2.leftTriggerWasPressed()) {
-            robot.secondaryIntakeMotor.setPower(0);
-            robot.transferServo2.setPower(0);
-            robot.transferServo1.setPower(0);
+            robot.launcher.stopLaunch();
         }
-        robot.launchMotor.setVelocity(targetSpeed);
-        robot.launchMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(P, I, D, F));
-        Robot.panelsTelemetry.addData("Target Speed", targetSpeed);
+        if (gamepad2.crossWasPressed()) {
+            robot.launcher.switchStateSwitcher();
+        }
+        Robot.panelsTelemetry.addData("Target Speed", robot.launcher.launcherVelocity);
         Robot.panelsTelemetry.addData("Motor Speed", robot.launchMotor.getVelocity());
         Robot.panelsTelemetry.update();
     }

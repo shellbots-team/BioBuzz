@@ -136,6 +136,9 @@ public class Robot {
         transferServo1.setDirection(FORWARD);
         transferServo2.setDirection(REVERSE);
 
+        flowerServo1.setDirection(Servo.Direction.FORWARD);
+        flowerServo2.setDirection(Servo.Direction.REVERSE);
+
         launchMotor.setDirection(REVERSE);
 
         intake = new Intake(this);

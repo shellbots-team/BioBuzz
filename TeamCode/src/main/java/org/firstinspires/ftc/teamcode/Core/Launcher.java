@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.Core;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+@Configurable
 public class Launcher {
     private Robot robot;
 
     public Launcher(Robot robot){
-        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, I, D, F);
         robot.launchMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
         this.robot = robot;
     }
@@ -18,8 +20,12 @@ public class Launcher {
     private boolean switchState = false;
     private boolean startLaunch = false;
 
-    private double P = 32;
-    private double F = 14.8;
+    private static double P = 32;
+    private static double I = 0;
+    private static double D = 0;
+    private static double F = 14.8;
+
+    public static double launcherVelocity = 1543;
 
 
     public enum LaunchState {
@@ -46,7 +52,7 @@ public class Launcher {
                 }
                 break;
             case OTHER_BALLS:
-                if (robot.opmode.getRuntime() - stateStallTime >= 4) {
+                if (robot.opmode.getRuntime() - stateStallTime >= 4.5) {
                     startLaunch = false;
                     switchState = false;
                     currentLaunchState = LaunchState.WAIT;
@@ -85,7 +91,7 @@ public class Launcher {
     //acts as a timer for the launching state machine
 
     public void launch() {
-        robot.launchMotor.setVelocity(1543);
+        robot.launchMotor.setVelocity(launcherVelocity);
         revStartTime = robot.opmode.getRuntime();
         waiting = true;
     }
