@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.Core;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(group = "Core", name = "BadAuto")
-public class TemplateLegacyLinearAuto extends LinearOpMode {
+public class BadAuto extends LinearOpMode {
     private Robot robot;
     private AutonomousPLUS auto;
 

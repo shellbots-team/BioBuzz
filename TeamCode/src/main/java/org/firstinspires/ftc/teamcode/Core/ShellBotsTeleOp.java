@@ -8,16 +8,12 @@ import static org.firstinspires.ftc.teamcode.Core.Robot.DriveMode.STANDARD_ROBOT
 
 import com.bylazar.panels.Panels;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.Objects;
 
@@ -95,6 +91,8 @@ public class ShellBotsTeleOp extends OpMode {
                 startingPose.getY(),
                 startingPose.getHeading()
         );
+
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 12.31842);
 
         //teleFollower.setPose(startingPose);
         //teleFollower.setHeading(startingPose.getHeading()); // TODO Redundant?
@@ -185,8 +183,6 @@ public class ShellBotsTeleOp extends OpMode {
         flowerBar();
 
         launch();
-
-        launchStateMachine();
 
         intakeAndOuttake();
 
@@ -298,12 +294,6 @@ public class ShellBotsTeleOp extends OpMode {
          }
          if (gamepad2.dpadUpWasPressed()) {
              robot.flowerServo2.setPosition(0);
-         }
-     }
-
-     private void launchStateMachine() {
-         if (gamepad2.cross) {
-             robot.launcher.switchStateSwitcher();
          }
      }
 

@@ -1,33 +1,36 @@
 package org.firstinspires.ftc.teamcode.Core;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+
 public class Launcher {
     private Robot robot;
 
     public Launcher(Robot robot){
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
+        robot.launchMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
         this.robot = robot;
     }
     private double revStartTime = 0;
     private double stateStallTime = 0;
-
     private boolean waiting = false;
 
     private boolean switchState = false;
     private boolean startLaunch = false;
 
+    private double P = 32;
+    private double F = 14.8;
+
+
     public enum LaunchState {
         START,
-        SWITCH_TO_SECOND_BALL,
-        SECOND_BALL,
-        SWITCH_TO_THIRD_BALL,
-        THIRD_BALL,
-        SWITCH_TO_FOURTH_BALL,
-        FOURTH_BALL,
+        OTHER_BALLS,
         WAIT,
     }
     private LaunchState currentLaunchState = LaunchState.WAIT;
 
     public void update() {
-        if(waiting && robot.opmode.getRuntime() - revStartTime >= 4) {
+        if(waiting && robot.opmode.getRuntime() - revStartTime >= 1) {
             robot.transferServo1.setPower(1);
             robot.transferServo2.setPower(1);
             waiting = false;
@@ -36,52 +39,16 @@ public class Launcher {
 
         switch (currentLaunchState) {
             case START:
-                if (robot.opmode.getRuntime() - stateStallTime >= 5) {
+                if (robot.opmode.getRuntime() - stateStallTime >= 3) {
                     robot.secondaryIntakeMotor.setPower(1);
-                    switchLaunchBall();
                     stateStallTime = robot.opmode.getRuntime();
-                    currentLaunchState = LaunchState.SECOND_BALL;
+                    currentLaunchState = LaunchState.OTHER_BALLS;
                 }
                 break;
-            case SWITCH_TO_SECOND_BALL:
-                switchLaunchBall();
-                if (switchState) {
-                    launch();
-                    currentLaunchState = LaunchState.SECOND_BALL;
-                }
-                break;
-            case SECOND_BALL:
-                checkIfLaunchDone();
-                if (switchState) {
-                    stateStallTime = robot.opmode.getRuntime();
-                    currentLaunchState = LaunchState.SWITCH_TO_THIRD_BALL;
-                }
-                break;
-            case SWITCH_TO_THIRD_BALL:
-                switchLaunchBall();
-                if (switchState) {
-                    launch();
-                    currentLaunchState = LaunchState.THIRD_BALL;
-                }
-                break;
-            case THIRD_BALL:
-                checkIfLaunchDone();
-                if (switchState) {
-                    stateStallTime = robot.opmode.getRuntime();
-                    currentLaunchState = LaunchState.FOURTH_BALL;
-                }
-                break;
-            case SWITCH_TO_FOURTH_BALL:
-                switchLaunchBall();
-                if (switchState) {
-                    launch();
-                    currentLaunchState = LaunchState.FOURTH_BALL;
-                }
-                break;
-            case FOURTH_BALL:
-                checkIfLaunchDone();
-                if (switchState) {
+            case OTHER_BALLS:
+                if (robot.opmode.getRuntime() - stateStallTime >= 4) {
                     startLaunch = false;
+                    switchState = false;
                     currentLaunchState = LaunchState.WAIT;
                 }
                 break;
@@ -115,28 +82,10 @@ public class Launcher {
     /**
      * sets a timer for the new ball to get pushed back to the transfer servos, then switches the state in the launcher state machine
      */
-    private void switchLaunchBall() {
-        switchState = false;
-        if (robot.opmode.getRuntime() - stateStallTime >= 0.2) {
-            robot.secondaryIntakeMotor.setPower(0);
-            switchState = true;
-        }
-    }
-
-    /**
-     *
-     */
-    private void checkIfLaunchDone() {
-        switchState = false;
-        if (robot.opmode.getRuntime() - stateStallTime >= 2.5) {
-            robot.secondaryIntakeMotor.setPower(1);
-            switchState = true;
-        }
-    }
     //acts as a timer for the launching state machine
 
     public void launch() {
-        robot.launchMotor.setVelocity(1910);
+        robot.launchMotor.setVelocity(1543);
         revStartTime = robot.opmode.getRuntime();
         waiting = true;
     }
