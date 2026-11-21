@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Core;
 
+import static org.firstinspires.ftc.teamcode.Core.Robot.MoveDirection.BACKWARD;
 import static org.firstinspires.ftc.teamcode.Core.Robot.MoveDirection.FORWARD;
 import static org.firstinspires.ftc.teamcode.Core.Robot.MoveDirection.LEFT;
 import static org.firstinspires.ftc.teamcode.Core.Robot.MoveDirection.RIGHT;
@@ -40,14 +41,14 @@ public class WrongSideAuto extends LinearOpMode {
         auto.speed = 0.5;
 
         //The code to run once play has been pressed goes here.
-        auto.moveAndStall(FORWARD, 140, 0);
+        auto.moveAndStall(FORWARD, 680, 0);
         sleep(15000);
             launching = true;
             robot.launcher.switchStateSwitcher();
             waitWhileLaunching();
             robot.launcher.stopLaunch();
+            auto.moveAndStall(BACKWARD, 200 ,0);
             auto.moveAndStall(RIGHT, 1400, 0);
-            auto.moveAndStall(FORWARD, 200, 0);
     }
     private void waitWhileLaunching() {
         launchStartTime = getRuntime();
