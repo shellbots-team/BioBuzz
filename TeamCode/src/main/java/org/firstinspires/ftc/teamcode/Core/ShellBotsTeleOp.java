@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.Core.Robot.Alliance.RED;
 import static org.firstinspires.ftc.teamcode.Core.Robot.DriveMode.PEDRO;
 import static org.firstinspires.ftc.teamcode.Core.Robot.DriveMode.STANDARD_ROBOT_CENTRIC;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.panels.Panels;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
@@ -29,7 +30,6 @@ import java.util.Objects;
  * If you ever have problems with the program not showing up on the driver hub, it's probably because of that.
  * <p>
  */
-
 @TeleOp(name = "ShellBotsTeleOp", group = "Core")
 public class ShellBotsTeleOp extends OpMode {
 
@@ -189,6 +189,10 @@ public class ShellBotsTeleOp extends OpMode {
         switchAlliance();
 
         controlMode();
+
+        Robot.panelsTelemetry.addData("Target Speed", robot.launcher.launcherVelocity);
+        Robot.panelsTelemetry.addData("Motor Speed", robot.launchMotor.getVelocity());
+        Robot.panelsTelemetry.update();
 
         if (gamepad2.touchpad) {
             killSwitchActivated = true;

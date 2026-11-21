@@ -335,6 +335,10 @@ public class Robot {
      */
     public void readyHardware() {
         // TODO Get your hardware ready here
+        frontLeftDrive.setTargetPositionTolerance(10);
+        frontRightDrive.setTargetPositionTolerance(10);
+        backRightDrive.setTargetPositionTolerance(10);
+        backLeftDrive.setTargetPositionTolerance(10);
     }
 
     /**

@@ -20,12 +20,13 @@ public class Launcher {
     private boolean switchState = false;
     private boolean startLaunch = false;
 
-    private static double P = 32;
+    private static double P = 35;
     private static double I = 0;
     private static double D = 0;
-    private static double F = 14.8;
+    private static double F = 14.4;
+    private static double secondSwitchTime = 0;
 
-    public static double launcherVelocity = 1543;
+    public static double launcherVelocity = 1365;
 
 
     public enum LaunchState {
@@ -36,7 +37,7 @@ public class Launcher {
     private LaunchState currentLaunchState = LaunchState.WAIT;
 
     public void update() {
-        if(waiting && robot.opmode.getRuntime() - revStartTime >= 1) {
+        if(waiting && robot.opmode.getRuntime() - revStartTime >= 1.5) {
             robot.transferServo1.setPower(1);
             robot.transferServo2.setPower(1);
             waiting = false;
@@ -45,14 +46,14 @@ public class Launcher {
 
         switch (currentLaunchState) {
             case START:
-                if (robot.opmode.getRuntime() - stateStallTime >= 3) {
-                    robot.secondaryIntakeMotor.setPower(1);
+                if (robot.opmode.getRuntime() - stateStallTime >= secondSwitchTime) {
+                    robot.secondaryIntakeMotor.setPower(0.5);
                     stateStallTime = robot.opmode.getRuntime();
                     currentLaunchState = LaunchState.OTHER_BALLS;
                 }
                 break;
             case OTHER_BALLS:
-                if (robot.opmode.getRuntime() - stateStallTime >= 4.5) {
+                if (robot.opmode.getRuntime() - stateStallTime >= 6) {
                     startLaunch = false;
                     switchState = false;
                     currentLaunchState = LaunchState.WAIT;
@@ -67,6 +68,9 @@ public class Launcher {
                 }
                 break;
         }
+
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, I, D, F);
+        robot.launchMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
         robot.telemetry.addData("Launcher State", currentLaunchState);
         robot.telemetry.addData("Switch State", switchState);
